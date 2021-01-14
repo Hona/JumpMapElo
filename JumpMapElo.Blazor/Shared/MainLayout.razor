@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<div style="width: 100vw; height: 100vh; display: flex; flex-direction: column">
+<div style="width: 100vw; min-height: 100vh; display: flex; flex-direction: column">
     <div style="height: 64px; 
                 min-width: 100vw;
                 display: flex;
@@ -15,8 +15,8 @@
             Leaderboard
         </NavLink>
     </div>
-    <div style="height: 100%; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; flex-grow: 1; background: #7abaff; padding: 8px;">
-        <div style="height: 100%; width: 100%; background: white; flex-grow: 1;">
+    <div style="min-height: 100%; width: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column; flex-grow: 1; background: #7abaff; padding: 8px;">
+        <div style="min-height: 100%; width: 100%; background: white; flex-grow: 1;">
             @Body
         </div>
     </div>

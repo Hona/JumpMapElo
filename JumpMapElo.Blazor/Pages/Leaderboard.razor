@@ -3,6 +3,7 @@
 
 @inject IRatingRepository RatingRepository
 
+<div style="display: flex; justify-content: center">
 <h3>Leaderboard</h3>
 @if (_mapRatings == null)
 {
@@ -32,6 +33,7 @@ else
         </tbody>
     </table>
 }
+</div>
 @code {
     private IReadOnlyList<MapRating> _mapRatings;
 
