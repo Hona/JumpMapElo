@@ -31,7 +31,7 @@ namespace JumpMapElo.Blazor.Services
                     return _maps;
                 }
 
-                var classMapIds = _classes.Where(x => x.Value == jumpClass).Select(x => x.Key).ToList();
+                var classMapIds = _classes.Where(x => x.Value == jumpClass || x.Value == Class.Both).Select(x => x.Key).ToList();
                 
                 return _maps.Where(x => classMapIds.Contains(x.Id)).ToList();
             }
