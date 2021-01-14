@@ -17,7 +17,7 @@ namespace JumpMapElo.Blazor
 
         public static void CalculateElo(ref int playerOneRating, ref int playerTwoRating, Outcome outcome)
         {
-            const int eloK = 40;
+            const int eloK = 13;
             
             var delta = (int)(eloK * ((int)outcome - ExpectationToWin(playerOneRating, playerTwoRating)));
 
