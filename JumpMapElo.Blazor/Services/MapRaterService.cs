@@ -41,7 +41,7 @@ namespace JumpMapElo.Blazor.Services
             EloHelper.CalculateElo(ref winningElo, ref losingElo, Outcome.Win);
 
             winning.Elo = winningElo;
-            losing.Elo = losing.Elo;
+            losing.Elo = losingElo;
 
             await _ratingRepository.Update(winning);
             await _ratingRepository.Update(losing);
