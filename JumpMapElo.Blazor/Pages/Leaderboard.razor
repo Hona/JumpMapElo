@@ -29,7 +29,7 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var mapRating in _mapRatings.Where(x => MapService.GetMapClass(x.MapId) == Class.Soldier || MapService.GetMapClass(x.MapId) == Class.Both).OrderByDescending(x => x.Elo))
+        @foreach (var mapRating in _mapRatings.Where(x => GetMapClass(x.MapId) == Class.Soldier || GetMapClass(x.MapId) == Class.Both).OrderByDescending(x => x.Elo))
         {
             <tr>
                 <td>@mapRating.MapName</td>
@@ -47,7 +47,7 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var mapRating in _mapRatings.Where(x => MapService.GetMapClass(x.MapId) == Class.Demoman || MapService.GetMapClass(x.MapId) == Class.Both).OrderByDescending(x => x.Elo))
+        @foreach (var mapRating in _mapRatings.Where(x => GetMapClass(x.MapId) == Class.Demoman || GetMapClass(x.MapId) == Class.Both).OrderByDescending(x => x.Elo))
         {
             <tr>
                 <td>@mapRating.MapName</td>
@@ -60,10 +60,14 @@ else
 </div>
 @code {
     private IReadOnlyList<MapRating> _mapRatings;
+    private Dictionary<int, Class> _classes;
 
     protected override async Task OnInitializedAsync()
     {
+        _classes = await MapService.GetMapClassesAsync();
         _mapRatings = await RatingRepository.GetAll();
     }
+
+    private Class GetMapClass(int mapId) => _classes[mapId];
 
 }

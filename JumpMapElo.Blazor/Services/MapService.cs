@@ -80,9 +80,11 @@ namespace JumpMapElo.Blazor.Services
             return await GetMapsAsync(jumpClass);
         }
 
-        public Class GetMapClass(int mapId)
+        public async Task<Dictionary<int, Class>> GetMapClassesAsync()
         {
-            return _classes[mapId];
+            await GetMapsAsync(Class.Both);
+
+            return _classes;
         }
 
         public async Task<Map> GetRandomMapAsync(Class jumpClass)
