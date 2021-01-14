@@ -3,11 +3,9 @@
 
 @inject IRatingRepository RatingRepository
 
-<div style="display: flex; justify-content: center; flex-direction: column;">
+<div style="width: 100%; min-height: 100%; display : flex; justify-content: center; flex-direction: column; padding: 32px;">
     <h3>Leaderboard</h3>
-</div>
-    <div style="display: flex; justify-content: center; flex-direction: column;">
-@if (_mapRatings == null)
+    @if (_mapRatings == null)
 {
     <i>Loading...</i>
 }
