@@ -1,0 +1,43 @@
+﻿@page "/leaderboard"
+@using JumpMapElo.Blazor.Models
+
+@inject IRatingRepository RatingRepository
+
+<h3>Leaderboard</h3>
+@if (_mapRatings == null)
+{
+    <i>Loading...</i>
+}
+else if (!_mapRatings.Any())
+{
+    <strong>No results found, vote first.</strong>
+}
+else
+{
+    <table>
+        <thead>
+        <tr>
+            <td>Map Name</td>
+            <td>Elo Rating</td>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var mapRating in _mapRatings)
+            {
+                <tr>
+                    <td>@mapRating.MapName</td>
+                    <td>@mapRating.Elo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private IReadOnlyList<MapRating> _mapRatings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _mapRatings = await RatingRepository.GetAll();
+    }
+
+}

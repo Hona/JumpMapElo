@@ -1,0 +1,64 @@
+﻿@page "/"
+@using JumpMapElo.Blazor.Services
+@using JumpMapElo.Blazor.Models
+
+@inject MapService MapService
+@inject MapRaterService MapRaterService
+
+@if (_errored)
+{
+    <strong>An error has occurred, try refreshing the page</strong>
+}
+else if (_firstMap != null &&
+         _secondMap != null)
+{
+    <div style="display: flex; width: 100%; justify-content: center; align-items: center; flex-direction: row;
+                    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+                       -moz-animation: fadein 2s; /* Firefox < 16 */
+                        -ms-animation: fadein 2s; /* Internet Explorer */
+                         -o-animation: fadein 2s; /* Opera < 12.1 */
+                            animation: fadein 2s;">
+        <a @onclick="ChoseFirstMapAsync">
+            @_firstMap.Name
+        </a>
+        <a @onclick="ChoseSecondMapAsync">
+            @_secondMap.Name
+        </a>
+    </div>
+}
+else
+{
+    <i>Loading...</i>
+}
+
+@code
+{
+    private Map _firstMap;
+    private Map _secondMap;
+
+    private bool _errored;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            (_firstMap, _secondMap) = await MapService.GetTwoRandomMapsAsync();
+        }
+        catch
+        {
+            _errored = true;
+        }
+    }
+
+    private async Task VoteForMapAsync(Map winning, Map losing)
+    {
+        _firstMap = null;
+        _secondMap = null;
+        await MapRaterService.VoteMapAsync(winning, losing);
+        await OnInitializedAsync();
+    }
+
+    private async Task ChoseFirstMapAsync() => await VoteForMapAsync(_firstMap, _secondMap);
+
+    private async Task ChoseSecondMapAsync() => await VoteForMapAsync(_secondMap, _firstMap);
+}
