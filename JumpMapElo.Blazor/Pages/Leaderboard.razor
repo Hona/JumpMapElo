@@ -22,7 +22,7 @@ else
         </tr>
         </thead>
         <tbody>
-            @foreach (var mapRating in _mapRatings)
+            @foreach (var mapRating in _mapRatings.OrderByDescending(x => x.Elo))
             {
                 <tr>
                     <td>@mapRating.MapName</td>
