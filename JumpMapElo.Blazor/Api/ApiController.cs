@@ -26,16 +26,21 @@ namespace JumpMapElo.Blazor.Api
         [HttpGet("elos")]
         public async Task<IActionResult> GetEloCsvAsync([FromQuery] string jumpClassString = null, [FromQuery]string outputFormat = "json")
         {
-            Class jumpClass;
+            Class? jumpClass;
             if (jumpClassString == null)
             {
-                jumpClass = Class.Both;
+                jumpClass = null;
             }
-            else if (!Enum.TryParse(jumpClassString, true, out jumpClass))
+            else if (!Enum.TryParse(jumpClassString, true, out Class jumpClassTemp))
             {
-                return BadRequest($"Invalid jump class, valid options are - nothing, or: '{string.Join(", ", Enum.GetNames(typeof(Class)))}'");
+                return BadRequest($"Invalid jump class, valid options are - nothing for every map, or: '{string.Join(", ", Enum.GetNames(typeof(Class)))}'");
+            }
+            else
+            {
+                jumpClass = jumpClassTemp;
             }
 
+            
             outputFormat = outputFormat.ToLower();
             if (outputFormat != "json" && outputFormat != "csv")
             {
@@ -45,8 +50,13 @@ namespace JumpMapElo.Blazor.Api
             var allMaps = await _ratingRepository.GetAll();
             var mapClasses = await _mapService.GetMapClassesAsync();
 
-            var output = allMaps.Where(x => mapClasses[x.MapId] == jumpClass)
-                .ToList();
+            var output = allMaps.ToList();
+
+            if (jumpClass.HasValue)
+            {
+                output = output.Where(x => mapClasses[x.MapId] == jumpClass)
+                    .ToList();
+            }
 
             if (outputFormat == "json")
             {
