@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using JumpMapElo.Blazor.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,9 @@ namespace JumpMapElo.Blazor
                 options.Connection(Configuration.GetConnectionString("Marten"));
 
                 options.AutoCreateSchemaObjects = AutoCreate.All;
+
+                options.Schema.For<MapRating>()
+                    .Identity(x => x.MapId);
             });
         }
 
