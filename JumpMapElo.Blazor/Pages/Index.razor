@@ -4,7 +4,7 @@
 
 @inject MapService MapService
 @inject MapRaterService MapRaterService
-
+<div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;">
 @if (_errored)
 {
     <strong>An error has occurred, try refreshing the page</strong>
@@ -39,6 +39,7 @@ else
 {
     <i>Loading...</i>
 }
+</div>
 
 @code
 {
