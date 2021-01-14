@@ -1,8 +1,11 @@
 ﻿@page "/leaderboard"
 @using JumpMapElo.Blazor.Models
 @using System.Collections.ObjectModel
+@using System.Linq
+@using JumpMapElo.Blazor.Services
 
 @inject IRatingRepository RatingRepository
+@inject MapService MapService
 
 <div style="margin-left: auto;
               margin-right: auto;
@@ -21,18 +24,36 @@ else
     <table>
         <thead>
         <tr>
-            <td>Map Name</td>
+            <td>Soldier Map Name</td>
             <td>Elo Rating</td>
         </tr>
         </thead>
         <tbody>
-            @foreach (var mapRating in _mapRatings.OrderByDescending(x => x.Elo))
-            {
-                <tr>
-                    <td>@mapRating.MapName</td>
-                    <td>@mapRating.Elo</td>
-                </tr>
-            }
+        @foreach (var mapRating in _mapRatings.Where(x => MapService.GetMapClass(x.MapId) == Class.Soldier || MapService.GetMapClass(x.MapId) == Class.Both).OrderByDescending(x => x.Elo))
+        {
+            <tr>
+                <td>@mapRating.MapName</td>
+                <td>@mapRating.Elo</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <table>
+        <thead>
+        <tr>
+            <td>Demoman Map Name</td>
+            <td>Elo Rating</td>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var mapRating in _mapRatings.Where(x => MapService.GetMapClass(x.MapId) == Class.Demoman || MapService.GetMapClass(x.MapId) == Class.Both).OrderByDescending(x => x.Elo))
+        {
+            <tr>
+                <td>@mapRating.MapName</td>
+                <td>@mapRating.Elo</td>
+            </tr>
+        }
         </tbody>
     </table>
 }

@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/{Class}"
 @using JumpMapElo.Blazor.Services
 @using JumpMapElo.Blazor.Models
 
@@ -18,7 +19,7 @@ else if (_firstMap != null &&
                                                     left: 0;
                                                     right: 0;
                                                     text-align: center;">
-        Pick your favourite!
+        Pick your favourite @Class.ToLower() map!
 
     </div>
     <div style="display: flex; width: 100%; justify-content: center; align-items: center; flex-direction: row;
@@ -48,16 +49,17 @@ else
 
     private bool _errored;
 
-    protected override async Task OnInitializedAsync()
+    [Parameter]
+    public string Class { get; set; }
+
+    protected override async Task OnParametersSetAsync()
     {
-        try
+        if (string.IsNullOrWhiteSpace(Class))
         {
-            (_firstMap, _secondMap) = await MapService.GetTwoRandomMapsAsync();
+            Class = "Soldier";
         }
-        catch
-        {
-            _errored = true;
-        }
+        
+        (_firstMap, _secondMap) = await MapService.GetTwoRandomMapsAsync((Class)Enum.Parse(typeof(Class), Class));
     }
 
     private async Task VoteForMapAsync(Map winning, Map losing)
@@ -65,7 +67,7 @@ else
         _firstMap = null;
         _secondMap = null;
         await MapRaterService.VoteMapAsync(winning, losing);
-        await OnInitializedAsync();
+        await OnParametersSetAsync();
     }
 
     private async Task ChoseFirstMapAsync() => await VoteForMapAsync(_firstMap, _secondMap);
