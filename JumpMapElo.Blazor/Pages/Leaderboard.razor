@@ -7,56 +7,59 @@
 @inject IRatingRepository RatingRepository
 @inject MapService MapService
 
-<div style="margin-left: auto;
-              margin-right: auto;
-display: block; padding: 16px;">
     <h3>Leaderboard</h3>
-    @if (_mapRatings == null)
-{
-    <i>Loading...</i>
-}
-else if (!_mapRatings.Any())
-{
-    <strong>No results found, vote first.</strong>
-}
-else
-{
-    <table>
-        <thead>
-        <tr>
-            <td>Soldier Map Name</td>
-            <td>Elo Rating</td>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var mapRating in _mapRatings.Where(x => GetMapClass(x.MapId) == Class.Soldier || GetMapClass(x.MapId) == Class.Both).OrderByDescending(x => x.Elo))
-        {
-            <tr>
-                <td>@mapRating.MapName</td>
-                <td>@mapRating.Elo</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+<div style="display: flex;
+                justify-content: center;
+                align-items: flex-start;">
     
-    <table>
-        <thead>
-        <tr>
-            <td>Demoman Map Name</td>
-            <td>Elo Rating</td>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var mapRating in _mapRatings.Where(x => GetMapClass(x.MapId) == Class.Demoman || GetMapClass(x.MapId) == Class.Both).OrderByDescending(x => x.Elo))
-        {
+    @if (_mapRatings == null)
+    {
+        <i>Loading...</i>
+    }
+    else if (!_mapRatings.Any())
+    {
+        <strong>No results found, vote first.</strong>
+    }
+    else
+    {
+        <table>
+            <thead>
             <tr>
-                <td>@mapRating.MapName</td>
-                <td>@mapRating.Elo</td>
+                <td>Soldier Map Name</td>
+                <td>Elo Rating</td>
             </tr>
-        }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+            @foreach (var mapRating in _mapRatings.Where(x => GetMapClass(x.MapId) == Class.Soldier || GetMapClass(x.MapId) == Class.Both)
+                .OrderByDescending(x => x.Elo))
+            {
+                <tr>
+                    <td>@mapRating.MapName</td>
+                    <td>@mapRating.Elo</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+            <tr>
+                <td>Demoman Map Name</td>
+                <td>Elo Rating</td>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var mapRating in _mapRatings.Where(x => GetMapClass(x.MapId) == Class.Demoman || GetMapClass(x.MapId) == Class.Both)
+                .OrderByDescending(x => x.Elo))
+            {
+                <tr>
+                    <td>@mapRating.MapName</td>
+                    <td>@mapRating.Elo</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
 </div>
 @code {
     private IReadOnlyList<MapRating> _mapRatings;
